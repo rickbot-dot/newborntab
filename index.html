@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<!--
+  SPDX-License-Identifier: MIT
+
+  NewbornTab is written using html, js with jquery sauce, and css with
+  bootstrap toppings.
+-->
+
+<html>
+        <head>
+                <title>New Tab</title>
+                <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+                <script href="bootstrap/js/bootstrap.min.js"> </script>
+                <script>
+const searchButton = document.getElementById('search-button');
+const searchBar = document.getElementById('search-bar');
+
+// Add event listeners for both button click and Enter key press on the search bar
+searchButton.addEventListener('click', handleSearch);
+searchBar.addEventListener('keydown', handleKeyPress);
+
+function handleSearch() {
+  const searchTerm = searchBar.value.trim(); // Get the trimmed search term from the bar
+  if (searchTerm) {
+    chrome.search.query({ text: searchTerm }, (results) => {
+      // Access the first search result URL from the results object
+      const searchUrl = results[0].url;
+      // Update the current tab URL with the search results
+      chrome.tabs.update({ url: searchUrl });
+    });
+  }
+}
+
+function handleKeyPress(event) {
+  if (event.key === 'Enter') {
+    handleSearch();
+  }
+}
+        </script>
+        </head>
+        <body>
+                <div id="container" style="padding: 70px;">
+                <div class="input-group mb-3">
+                <input type="text" placeholder="Search using Google..." class="form-control" id="search-bar" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="search-button">Search</button>
+        </body>
+</html>
